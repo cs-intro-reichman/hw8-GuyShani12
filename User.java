@@ -46,9 +46,8 @@
         if (name == null){
             return false;
         }
-        int n = fCount;
-        for (int i = 0; i < n; i++){
-            if (follows[i].equals(name.toLowerCase())){
+        for (int i = 0; i < fCount; i++){
+            if (follows[i].toLowerCase().equals(name.toLowerCase())){
                 return true;
             }
         }
@@ -57,19 +56,10 @@
     /** Makes this user follow the given name. If successful, returns true. 
      *  If this user already follows the given name, or if the follows list is full, does nothing and returns false; */
     public boolean addFollowee(String name) {
-        if (name == null){
+        if ((name == null) || (fCount == maxfCount) || (follows(name))){
             return false;
-        }
-        int n = fCount;
-        if (fCount == maxfCount){
-            return false;
-        } 
-        for (int i = 0; i < n; i++){
-            if (follows[i].equals(name.toLowerCase())){
-                return false;
-            }
-        }
-        follows[n] = name;
+        }   
+        follows[fCount] = name;
         fCount++;
         return true;
     }
@@ -80,21 +70,21 @@
         if (name == null){
             return false;
         }
-        for (int i = 0; i < fCount; i++)
-        {
-            if (follows[i].equals(name.toLowerCase())){
-                if (i == fCount-1){
+        for (int i = 0; i < fCount; i++){
+            if (follows[i].equals(name)){
                     follows[i] = null;
-                }
-                else {
                   for (int j = i; j < fCount; j++){
-                        follows[j] = follows[j+1];
+                        if (j < fCount-1){
+                            follows[j] = follows[j+1];
+                        }
+                        else {
+                          follows[j] = null;
+                        }
                     }
                 }
                 fCount--;
                 return true;
             }
-        }
         return false;
     }
 
@@ -104,7 +94,7 @@
         int count = 0;
          for (int i = 0; i < fCount; i++){
             for (int j = 0; j < other.getfCount(); j++){
-                if (follows[i].equals(other.getfFollows()[j].toLowerCase())){
+                if (follows[i].equals(other.getfFollows()[j])){
                     count++;
                 }
             }
@@ -123,7 +113,7 @@
         }
         if (count == 1){
             for (int i = 0; i < other.getfCount(); i++){
-                if (other.getfFollows()[i].equals(this.name.toLowerCase())){
+                if (other.getfFollows()[i].equals(this.name)){
                     count++;
                 }
             }

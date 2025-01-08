@@ -50,7 +50,7 @@ public class Network {
             return false;
         }
         for (int i = 0; i < userCount; i++){
-            if (users[i].getName().equals(name.toLowerCase())){
+            if (users[i].getName().equals(name)){
                 return false;
             }
         }
@@ -66,10 +66,13 @@ public class Network {
         if ((name1 == null || name2 == null) || (getUser(name1) == null || getUser(name2) == null)){
             return false;
         }
-        if (name1.toLowerCase().equals(name2.toLowerCase())){
+        if (name1.equals(name2)){
             return false;
         }
-        return getUser(name1).addFollowee(name2.toLowerCase());
+        if (getUser(name1).addFollowee(name2)){
+            return true;
+        }
+        return false;
     }
     
     /** For the user with the given name, recommends another user to follow. The recommended user is
@@ -77,7 +80,7 @@ public class Network {
     public String recommendWhoToFollow(String name) {
         int maxMatual = 0;
         String max ="";
-        if (getUser(name) == null){
+        if ((getUser(name) == null) || getUser(name) == null){
             return null;
         }
         for (int i = 0; i < userCount; i++){
@@ -96,18 +99,12 @@ public class Network {
      *  The user who appears the most in the follow lists of all the users. */
     public String mostPopularUser() {
         int maxFollow = 0;
-        String max = "";
+        String max = null;
         for (int i = 0; i < userCount; i++){
-            int count = 0;
-            for (int j = 0; j < users[i].getfCount(); j++){
-                if (users[j].follows(users[i].getName())){
-                    count++;
-                }
-            }
-            if (maxFollow < count){
-                maxFollow = count;
+            if (followeeCount(users[i].getName()) > maxFollow){
+                maxFollow = followeeCount(users[i].getName());
                 max = users[i].getName();
-            }
+            }      
         }
         return max;
     }
@@ -127,7 +124,7 @@ public class Network {
     // Returns a textual description of all the users in this network, and who they follow.
     public String toString() {
         if (userCount == 0){
-            return "Network";
+            return "Network:";
         }
         String ans = "Network:" + '\n';
         for (int i = 0; i < userCount; i++){

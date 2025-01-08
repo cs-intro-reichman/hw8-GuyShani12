@@ -104,7 +104,7 @@
         int count = 0;
          for (int i = 0; i < fCount; i++){
             for (int j = 0; j < other.getfCount(); j++){
-                if (follows[i].equals(other.getfFollows()[j])){
+                if (follows[i].equals(other.getfFollows()[j].toLowerCase())){
                     count++;
                 }
             }
@@ -123,7 +123,7 @@
         }
         if (count == 1){
             for (int i = 0; i < other.getfCount(); i++){
-                if (other.getfFollows()[i].equals(this.name)){
+                if (other.getfFollows()[i].equals(this.name.toLowerCase())){
                     count++;
                 }
             }
